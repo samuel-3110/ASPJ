@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block head %}
+<!-- To Call Bootstrap + CSS -->
+{{ super() }}
+{% endblock %}
+
+
+{% block content %}
+<!-- To Call Bootstrap JS -->
+{{ super() }} 
+
+<div class="text-center mt-5">
+    <h4>List it yourself</h4>
+    <p>Find your own buyers</p>
+</div>
+<div class="list-box text-center w-75 mx-auto py-5">
+    <img src="https://cdn-icons-png.flaticon.com/512/4211/4211763.png" alt="" class="img-fluid">
+    <br>
+    <button type="button" onclick="document.getElementById('getfile').click()" class="btn" style="background-color: #008F79; color: white;">Select photos</button>
+    <input type="file" id="getfile" name="img" accept="image/*" class="d-none">
+    <h5 class="pt-4">or drag photos here</h5>
+    <p>&#40;Up to 10 photos&#41;</p>
+</div>
+
+<div class="images-container w-75 mx-auto mt-5 d-flex"></div>
+
+<script>
+    let imageCounter = 1;
+
+    document.getElementById("getfile").addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
+                imageContainer.style.maxWidth = '400px'; // Set max-width to 400px
+                imageContainer.style.position = 'relative'; // Set position to relative
+                imageContainer.innerHTML = `
+                    <img src="${e.target.result}" class="img-fluid" alt="Image Preview" id="imgPreview${imageCounter}" style="width: 100%; height: 100%;">
+                `;
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('btn', 'btn-danger', 'del_img');
+                deleteButton.innerHTML = '<i class="bi bi-trash3-fill"></i>';
+                deleteButton.setAttribute('onclick', `deleteImage('imgPreview${imageCounter}')`); // Add onclick attribute
+                imageContainer.appendChild(deleteButton);
+                document.querySelector('.images-container').appendChild(imageContainer);
+                imageCounter++;
+                // Reset file input value
+                document.getElementById('getfile').value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function deleteImage(imageId) {
+        const imageElement = document.getElementById(imageId);
+        imageElement.parentNode.remove();
+        // Reset file input value
+        document.getElementById('getfile').value = '';
+    }
+</script>
+
+{% endblock %}
