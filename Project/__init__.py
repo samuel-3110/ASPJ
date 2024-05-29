@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 import shelve
+from Forms import *
 
 
 db = SQLAlchemy()
@@ -105,7 +106,7 @@ def delete_review(index):
         else:
             return jsonify({'success': False, 'error': 'Review not found'}), 404
 
-@app.route('/')
+@app.route('/review')
 def index():
     return render_template( 'index.html')
 
