@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Set the default color of the stars */
+        .star-rating {
+            color: #bebebe;
+            font-size: 2em;
+        }
+        /* Create the star */
+        .my-star::before {
+            content: "\002605";
+        }
+        /* Remove the default style (italic) of the star */
+        .my-star {
+            font-style: unset !important;
+        }
+        /* Set active star color */
+        .is-active {
+            color: #fb8900;
+        }
+        /* Set color on hover */
+        .my-star:not(.is-active):hover {
+            color: #fb8900;
+        }
+        #review-form {
+            margin-top: 20px;
+        }
+        #review-text {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        #reviews-container {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            (function () {
+                let sr = document.querySelectorAll('.my-star');
+                let i = 0;
+                // Loop through stars
+                while (i < sr.length) {
+                    // Attach click event
+                    sr[i].addEventListener('click', function () {
+                        // Current star
+                        let cs = parseInt(this.getAttribute("data-star"));
+                        // Output current clicked star value
+                        document.querySelector('#output').value = cs;
+                        /* Our first loop to set the class on preceding star elements */
+                        let pre = cs; // Set the current star value
+                        // Loop through and set the active class on preceding stars
+                        while (1 <= pre) {
+                            // Check if the classlist contains the active class, if not, add the class
+                            if (!document.querySelector('.star-' + pre).classList.contains('is-active')) {
+                                document.querySelector('.star-' + pre).classList.add('is-active');
+                            }
+                            // Decrement our current index
+                            --pre;
+                        }// End of first loop
+                        /* Our second loop to unset the class on succeeding star elements */
+                        // Loop through and unset the active class, skipping the current star
+                        let succ = cs + 1;
+                        while (5 >= succ) {
+                            // Check if the classlist contains the active class, if yes, remove the class
+                            if (document.querySelector('.star-' + succ).classList.contains('is-active')) {
+                                document.querySelector('.star-' + succ).classList.remove('is-active');
+                            }
+                            // Increment current index
+                            ++succ;
+                        }
+                    })// End of click event
+                    i++;
+                }// End of while loop
+            })();// End of function
+
+            // Load existing reviews on page load
+            fetch('/get-reviews')
+                .then(response => response.json())
+                .then(data => {
+                    const reviewsContainer = document.querySelector('#reviews-container');
+                    data.reviews.forEach(review => {
+                        let reviewElement = document.createElement('div');
+                        reviewElement.innerHTML = `<p>Rating: ${review.rating} stars</p><p>${review.text}</p>`;
+                        reviewsContainer.appendChild(reviewElement);
+                    });
+                });
+
+            // Handle form submission
+            document.querySelector('#review-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+                // Get the rating and review text
+                let rating = document.querySelector('#output').value;
+                let reviewText = document.querySelector('#review-text').value;
+                if (rating && reviewText) {
+                    fetch('/submit-review', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ rating: rating, text: reviewText })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Create a new review element
+                            let reviewElement = document.createElement('div');
+                            reviewElement.innerHTML = `<p>Rating: ${rating} stars</p><p>${reviewText}</p>`;
+                            // Add the review to the reviews container
+                            document.querySelector('#reviews-container').appendChild(reviewElement);
+                            // Clear the form
+                            document.querySelector('#review-text').value = '';
+                            document.querySelector('#output').value = '';
+                            let stars = document.querySelectorAll('.my-star');
+                            stars.forEach(star => star.classList.remove('is-active'));
+                        } else {
+                            alert('Failed to submit review.');
+                        }
+                    });
+                } else {
+                    alert('Please provide a rating and a review.');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <p class="star-rating">
+        <i class="my-star star-1" data-star="1"></i>
+        <i class="my-star star-2" data-star="2"></i>
+        <i class="my-star star-3" data-star="3"></i>
+        <i class="my-star star-4" data-star="4"></i>
+        <i class="my-star star-5" data-star="5"></i>
+    </p>
+    <input type="number" readonly id="output">
+    <form id="review-form">
+        <textarea id="review-text" placeholder="Write your review here"></textarea>
+        <button type="submit">Submit Review</button>
+    </form>
+    <h2>Submitted Reviews:</h2>
+    <div id="reviews-container"></div>
+</body>
+</html>

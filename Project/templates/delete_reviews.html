@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Reviews</title>
+</head>
+<body>
+    <h1>Delete Reviews</h1>
+    <div id="reviews-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load existing reviews on page load
+            fetch('/get-reviews')
+                .then(response => response.json())
+                .then(data => {
+                    const reviewsContainer = document.querySelector('#reviews-container');
+                    data.reviews.forEach((review, index) => {
+                        let reviewElement = document.createElement('div');
+                        reviewElement.innerHTML = `
+                            <p>Rating: ${review.rating} stars</p>
+                            <p>${review.text}</p>
+                            <button class="delete-button" data-index="${index}">Delete</button>`;
+                        reviewsContainer.appendChild(reviewElement);
+                    });
+
+                    // Add event listeners to delete buttons
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const index = this.getAttribute('data-index');
+                            fetch(`/delete-review/${index}`, {
+                                method: 'DELETE'
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Remove the deleted review from the DOM
+                                    this.parentElement.remove();
+                                } else {
+                                    alert('Failed to delete review.');
+                                }
+                            });
+                        });
+                    });
+                });
+        });
+
+    </script>
+</body>
+</html>
