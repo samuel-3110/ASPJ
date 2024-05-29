@@ -57,6 +57,11 @@ def sell():
 
 
 #sex demon junkee
+from flask import Flask, request, jsonify, send_from_directory, redirect, render_template
+import shelve
+
+app = Flask(__name__, static_folder='')
+
 DATABASE = 'reviews.db'
 
 def get_all_reviews():
@@ -87,7 +92,7 @@ def submit_review():
 
 @app.route('/delete-reviews')
 def delete_reviews():
-    return send_from_directory('', 'delete_reviews.html')
+    return render_template( 'delete_reviews.html')
 
 @app.route('/delete-review/<int:index>', methods=['DELETE'])
 def delete_review(index):
@@ -102,7 +107,11 @@ def delete_review(index):
 
 @app.route('/')
 def index():
-    return send_from_directory('', 'index.html')
+    return render_template( 'index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 if __name__== "__main__":
     app.run(debug=True)
