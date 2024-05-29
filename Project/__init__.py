@@ -1,14 +1,18 @@
-from flask import Flask, render_template,request, jsonify, send_from_directory
+from flask import Flask, render_template,request, jsonify, send_from_directory, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 import shelve
 from Forms import *
+from dotenv import load_dotenv
+from datetime import timedelta
 
 
 db = SQLAlchemy()
+load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 db.init_app(app)
 
 class Product(db.Model):
@@ -109,6 +113,165 @@ def delete_review(index):
 @app.route('/review')
 def index():
     return render_template( 'index.html')
+
+#YY
+@app.route('/userprofile')
+def user_profile():
+    return render_template('userprofile.html')
+
+
+@app.route('/profile:orders')
+def orders():
+    return render_template('orders.html')
+
+
+@app.route('/fconfirm')
+def forgotconfirm():
+    return render_template('forgotconfirm.html')
+
+
+@app.route('/rconfirm')
+def resetconfirm():
+    return render_template('resetconfirm.html')
+
+
+@app.route('/rfail')
+def resetfail():
+    return render_template('resetfail.html')
+
+
+@app.route('/freset', methods=['GET', 'POST'])
+def forgotresetpassword():
+    reset_form = forgotreset(request.form)
+    if request.method == 'POST' and reset_form.validate():
+        return redirect(url_for('resetconfirm'))
+    return render_template('forgotreset.html', form=reset_form)
+
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot():
+    forgot_form = forgotpassword(request.form)
+    if request.method == 'POST' and forgot_form.validate():
+        return redirect(url_for('forgotconfirm'))
+    return render_template('forgot.html', form=forgot_form)
+
+
+@app.route('/sconfirm')
+def signupconfirm():
+    return render_template('signupconfirm.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('id', None)
+    return redirect(url_for('home'))
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def create_user():
+    create_user_form = CreateUserForm(request.form)
+    if request.method == 'POST' and create_user_form.validate():
+        return redirect(url_for('signupconfirm'))
+    return render_template('signup.html', form=create_user_form)
+
+
+@app.route('/loginpage', methods=['GET', 'POST'])
+def login_check():
+    user_login_form = UserLogin(request.form)
+    if request.method == 'POST' and user_login_form.validate():
+        x = ["1", "John", "john@gmail.com", "abcdefg",
+             "earth", "12345678"]
+        session["id"] = x
+        session.permanent = True
+        return redirect(url_for('home'))
+    return render_template('loginpage.html', form=user_login_form)
+
+
+@app.route('/loginfail', methods=['GET', 'POST'])
+def loginfail():
+    user_login_form = UserLogin(request.form)
+    if request.method == 'POST' and user_login_form.validate():
+        x = ["1", "John", "john@gmail.com", "abcdefg",
+             "earth", "12345678"]
+        session["id"] = x
+        session.permanent = True
+        return redirect(url_for('home'))
+    return render_template('loginfail.html', form=user_login_form)
+
+
+@app.route('/update:address', methods=['GET', 'POST'])
+def update_address():
+    new_address = newaddress(request.form)
+    if request.method == 'POST' and new_address.validate():
+        x = session['id']
+        x[4] = new_address.mailing_address.data
+        session["id"] = x
+        return redirect(url_for('user_profile'))
+    return render_template('userprofileaddress.html', form=new_address)
+
+
+@app.route('/update:username', methods=['GET', 'POST'])
+def update_username():
+    new_username = newusername(request.form)
+    if request.method == 'POST' and new_username.validate():
+        x = session['id']
+        x[1] = new_username.username.data
+        session["id"] = x
+        return redirect(url_for('user_profile'))
+    return render_template('userprofileusername.html', form=new_username)
+
+
+@app.route('/update:phone', methods=['GET', 'POST'])
+def update_phone():
+    new_phone = newphone(request.form)
+    if request.method == 'POST' and new_phone.validate():
+        x = session['id']
+        x[5] = new_phone.phone.data
+        session["id"] = x
+        return redirect(url_for('user_profile'))
+    return render_template('userprofilephone.html', form=new_phone)
+
+
+@app.route('/update:password', methods=['GET', 'POST'])
+def update_password():
+    new_password = newpassword(request.form)
+    if request.method == 'POST' and new_password.validate():
+        return redirect(url_for('user_profile'))
+    return render_template('userprofilepassword.html', form=new_password)
+
+
+@app.route('/update:email', methods=['GET', 'POST'])
+def update_email():
+    new_email = newemail(request.form)
+    if request.method == 'POST' and new_email.validate():
+        x = session['id']
+        x[2] = new_email.email.data
+        session["id"] = x
+        return redirect(url_for('user_profile'))
+    return render_template('userprofileemail.html', form=new_email)
+
+
+@app.route('/deleteaccount', methods=['GET', 'POST'])
+def delete_account():
+    delete = deleteaccount(request.form)
+    if request.method == 'POST' and delete.validate():
+        session.pop('id', None)
+        return redirect(url_for('deleteconfirm'))
+    return render_template('deleteaccount.html', form=delete)
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/deleteconfirm')
+def deleteconfirm():
+    return render_template('deleteconfirm.html')
+
+@app.before_request
+def func():
+    session.modified = True
 
 if __name__ == '__main__':
     app.run(debug=True)
