@@ -12,38 +12,134 @@
 <!-- To Call Bootstrap JS -->
 {{ super() }} 
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+<h4 class="mx-auto mt-5" style="width: 60%;">What would you like to find?</h4>
+
+<div class="row mx-auto" style="width: 60%;">
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/02_mobile_phones_gadgets.png" alt="Phone">
+        <figcaption>Mobile Phones & Gadgets</figcaption>
     </div>
-</nav>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/08_womens_fashion.png" alt="Dress">
+        <figcaption>Women's Fashion</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/09_mens_fashion.png" alt="Shirt">
+        <figcaption>Men's Fashion</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/10_luxury.png" alt="Handbag">
+        <figcaption>Luxury</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/2300/2020/01/16/freeitems-1600401157.png" alt="Present">
+        <figcaption>Free Items</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/06_furniture_home_living.png" alt="Sofa">
+        <figcaption>Furniture & Home Living</figcaption>
+    </div>
+</div>
+
+<div id="carouselExample" class="carousel carousel-dark slide mt-5">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="row row-cols-5 justify-content-center">
+          {% for product in products %}
+          <div class="card col-xs-6 col-md-4 col-lg-2 mx-1" style="width: 12%">
+            <div class="card-body d-flex">
+              <img class="img-fluid" src="https://shorturl.at/HpojE" style="border-radius: 50%; width: 40px; border: 1px solid lightgray;">
+              <p class="card-text ms-2" style="font-size: 0.8rem;">Jebron Lames</p>
+            </div>
+            <img class="img-fluid card-img-top" src="{{ product.img }}" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">S${{ product.price }}</h6>
+              <p class="card-text">{{ product.condition }}</p>
+              <p class="card-text">{{ product.fav }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row row-cols-5 justify-content-center">
+          {% for product in products %}
+          <div class="card col-xs-6 col-md-4 col-lg-2 mx-1" style="width: 12%">
+            <div class="card-body d-flex">
+              <img class="img-fluid" src="https://shorturl.at/HpojE" style="border-radius: 50%; width: 40px; border: 1px solid lightgray;">
+              <p class="card-text ms-2" style="font-size: 0.8rem;">Jebron Lames</p>
+            </div>
+            <img class="img-fluid card-img-top" src="{{ product.img }}" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">S${{ product.price }}</h6>
+              <p class="card-text">{{ product.condition }}</p>
+              <p class="card-text">{{ product.fav }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row row-cols-5 justify-content-center">
+          {% for product in products %}
+          <div class="card col-xs-6 col-md-4 col-lg-2 mx-1" style="width: 12%">
+            <div class="card-body d-flex">
+              <img class="img-fluid" src="https://shorturl.at/HpojE" style="border-radius: 50%; width: 40px; border: 1px solid lightgray;">
+              <p class="card-text ms-2" style="font-size: 0.8rem;">Jebron Lames</p>
+            </div>
+            <img class="img-fluid card-img-top" src="{{ product.img }}" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">S${{ product.price }}</h6>
+              <p class="card-text">{{ product.condition }}</p>
+              <p class="card-text">{{ product.fav }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="margin-left: 17%;">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="margin-right: 17%;">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const carousel = document.querySelector('#carouselExample');
+      const prevButton = carousel.querySelector('.carousel-control-prev');
+      const nextButton = carousel.querySelector('.carousel-control-next');
+  
+      function updateArrowVisibility() {
+        const activeIndex = Array.from(carousel.querySelectorAll('.carousel-item')).findIndex(item => item.classList.contains('active'));
+        const totalItems = carousel.querySelectorAll('.carousel-item').length;
+  
+        if (activeIndex === 0) {
+          prevButton.style.display = 'none';
+        } else {
+          prevButton.style.display = 'block';
+        }
+  
+        if (activeIndex === totalItems - 1) {
+          nextButton.style.display = 'none';
+        } else {
+          nextButton.style.display = 'block';
+        }
+      }
+  
+      // Initial check
+      updateArrowVisibility();
+  
+      // Update visibility on slide event
+      carousel.addEventListener('slid.bs.carousel', updateArrowVisibility);
+    });
+</script>
+
 {% endblock %}
