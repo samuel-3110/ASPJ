@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Sellrouca - Profile{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="modal-body row">
+  <div class="col-md-1">
+    <!-- Your first column here -->
+  </div>
+  <div class="col-md-2 bg-info">
+      <div class="ms-4">
+      <br>
+      <h1 class="text-break">{{ session['id'][1] }}</h1>
+      <h5 class="my-3"><a href="/userprofile" class="link-primary" style="text-decoration:none">Account</a></h5>
+      <h5 class="my-3"><a href="/profile:orders" class="link-dark" style="text-decoration:none">Orders</a></h5>
+      <h5 class="my-3"><a href="/logout" style="text-decoration:none" class="link-dark">Logout</a></h5>
+          <br><br><br><br><br><br>
+      </div>
+  </div>
+  <div class="col-md-7 bg-light">
+      <div class="ms-4">
+      <br>
+      <h2>Account</h2>
+      <h5 class="my-3"><a href="/update:username" class="link-dark" style="text-decoration:none">Change username</a></h5>
+      <h5 class="my-3"><a href="/update:password" class="link-dark" style="text-decoration:none">Change password</a></h5>
+      <h5 class="my-3 text-break"><a href="/update:email" class="link-dark" style="text-decoration:none">Update email address</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current email address: {{ session['id'][2] }}</h5>
+      <div class="my-3"><h5><a href="/update:phone" class="link-dark" style="text-decoration:none">Update phone number</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current phone number: {{ session['id'][5] }}</h5></div>
+      <div class="my-3 text-break"><h5><a href="/update:address" class="link-dark" style="text-decoration:none">Update mailing address</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Current mailing address: {{ session['id'][4] }}</h5></div>
+      <h5 class="my-3"><a href="/deleteaccount" class="text-danger" style="text-decoration:none">Delete account</a></h5>
+      </div>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+{% endblock %}
+
