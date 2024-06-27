@@ -7,60 +7,162 @@
 {{ super() }}
 {% endblock %}
 
-
 {% block content %}
 <!-- To Call Bootstrap JS -->
-{{ super() }} 
+{{ super() }}
 
-<div class="text-center mt-5">
-    <h4>List it yourself</h4>
-    <p>Find your own buyers</p>
+<div class="container">
+    <h4 class="pt-5">What are you listing today?</h4>
+    <div class="p-2 my-3" style="box-shadow: 0 0 10px lightgray; border-radius: 1%;">
+        <div class="list-box text-center p-5 m-2">
+            <img src="{{ url_for('static', filename='upload_img.png') }}" alt="" class="img-fluid">
+            <br>
+            <button type="button" onclick="document.getElementById('images').click()" class="btn" style="background-color: #008F79; color: white;">Select photos</button>
+            <p class="pt-4 mb-0">or drag photos here</p>
+            <p style="color: gray; font-size: 14px;">&#40;Up to 10 photos&#41;</p>
+        </div>
+    </div>
+    <div class="images-container w-75 mx-auto my-2 d-flex"></div>
+    <form method="POST" action="{{ url_for('sell') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.images(class="form-control-file d-none" ~ (" is-invalid" if form.images.errors else "")) }}
+            {% if form.images.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.images.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.category.label(class="form-control-label") }}
+            {{ form.category(onchange="checkCategory()", class="form-control" ~ (" is-invalid" if form.category.errors else "")) }}
+            {% if form.category.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.category.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group d-none">
+            {{ form.name.label(class="form-control-label") }}
+            {{ form.name(class="form-control" ~ (" is-invalid" if form.name.errors else "")) }}
+            {% if form.name.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.name.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group d-none">
+            {{ form.condition.label(class="form-control-label") }}
+            <div>
+                {% for subfield in form.condition %}
+                    <div class="form-check form-check-inline">
+                        {{ subfield(class="form-check-input" ~ (" is-invalid" if form.condition.errors else "")) }}
+                        {{ subfield.label(class="form-check-label") }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% if form.condition.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.condition.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group d-none">
+            {{ form.price.label(class="form-control-label") }}
+            {{ form.price(class="form-control" ~ (" is-invalid" if form.price.errors else "")) }}
+            {% if form.price.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.price.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group d-none">
+            {{ form.description.label(class="form-control-label") }}
+            {{ form.description(class="form-control" ~ (" is-invalid" if form.description.errors else "")) }}
+            {% if form.description.errors %}
+                <div class="invalid-feedback">
+                    {% for error in form.description.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
 </div>
-<div class="list-box text-center w-75 mx-auto py-5">
-    <img src="https://cdn-icons-png.flaticon.com/512/4211/4211763.png" alt="" class="img-fluid">
-    <br>
-    <button type="button" onclick="document.getElementById('getfile').click()" class="btn" style="background-color: #008F79; color: white;">Select photos</button>
-    <input type="file" id="getfile" name="img" accept="image/*" class="d-none">
-    <h5 class="pt-4">or drag photos here</h5>
-    <p>&#40;Up to 10 photos&#41;</p>
-</div>
-
-<div class="images-container w-75 mx-auto mt-5 d-flex"></div>
 
 <script>
-    let imageCounter = 1;
+    function checkCategory() {
+        var formgroups = document.getElementsByClassName("form-group");
+        var formLength = formgroups.length;
 
-    document.getElementById("getfile").addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
+        if (document.getElementById("category").value != "Select a category") {
+            for (var i = 0; i < formLength; i++) {
+                formgroups[i].classList.remove("d-none");
+            }
+        } 
+            // else {
+            //     for (var i = 1; i < formLength; i++) {
+            //         formgroups[i].classList.add("d-none");
+            //     }
+            // }
+    }
+
+    let imageCounter = 1;
+    const selectedFiles = [];
+
+    document.getElementById("images").addEventListener('change', function(event) {
+        const files = event.target.files;
+        for (let file of files) {
+            selectedFiles.push(file);
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imageContainer = document.createElement('div');
                 imageContainer.classList.add('image-container');
-                imageContainer.style.maxWidth = '400px'; // Set max-width to 400px
-                imageContainer.style.position = 'relative'; // Set position to relative
+                imageContainer.style.maxWidth = '400px';
+                imageContainer.style.position = 'relative';
                 imageContainer.innerHTML = `
                     <img src="${e.target.result}" class="img-fluid" alt="Image Preview" id="imgPreview${imageCounter}" style="width: 100%; height: 100%;">
                 `;
                 const deleteButton = document.createElement('button');
                 deleteButton.classList.add('btn', 'btn-danger', 'del_img');
                 deleteButton.innerHTML = '<i class="bi bi-trash3-fill"></i>';
-                deleteButton.setAttribute('onclick', `deleteImage('imgPreview${imageCounter}')`); // Add onclick attribute
+                deleteButton.setAttribute('onclick', `deleteImage(${imageCounter})`);
                 imageContainer.appendChild(deleteButton);
                 document.querySelector('.images-container').appendChild(imageContainer);
                 imageCounter++;
-                // Reset file input value
-                document.getElementById('getfile').value = '';
             };
             reader.readAsDataURL(file);
         }
+        updateFileInput();
     });
 
-    function deleteImage(imageId) {
-        const imageElement = document.getElementById(imageId);
+    function deleteImage(imageIndex) {
+        const imageElement = document.getElementById(`imgPreview${imageIndex}`);
         imageElement.parentNode.remove();
-        // Reset file input value
-        document.getElementById('getfile').value = '';
+        selectedFiles
+        .splice(imageIndex - 1, 1);
+        updateFileInput();
+    }
+
+    function updateFileInput() {
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        document.getElementById('images').files = dataTransfer.files;
     }
 </script>
 
