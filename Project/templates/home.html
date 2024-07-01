@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Sellrouca{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    img {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        display: block;
+    }
+</style>
+<h1 class="display-4"></h1>
+<div class="container text-center">
+    <p>This is a homepage</p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="notification text-danger">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+</div>
+
+{% endblock %}
+

@@ -17,6 +17,13 @@
       <a href="/" style="text-decoration:none"><h6 class="text-success">Sellrouca</h6></a>
 <h1 class="display-4 text-success">Your one stop<br>Online trading centre</h1>
 <h5>Welcome to Sellrouca!</h5>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification text-danger">
+        {{ messages[0] }}. Go to <a href="{{ url_for('login_check') }}">login page</a>.
+    </div>
+{% endif %}
+{% endwith %}
 <form id="signup" method="POST" action="">
   <div class="form-group">
     {{ render_field(form.username, class="form-control") }}
