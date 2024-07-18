@@ -179,9 +179,9 @@ def logout_required(func):
 def confirmed(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if current_user.is_confirmed is False:
+        if current_user.confirmed != "1":
             flash("Please confirm your account!", "warning")
-            return redirect(url_for("accounts.inactive"))
+            return redirect(url_for("inactive"))
         return func(*args, **kwargs)
 
     return decorated_function
@@ -266,7 +266,7 @@ def create_user():
 @app.route("/inactive")
 @login_required
 def inactive():
-    if current_user.is_confirmed:
+    if current_user.confirmed == 1:
         return redirect(url_for("home"))
     return render_template("inactive.html")
 
@@ -291,11 +291,11 @@ def confirm_email(token):
 @app.route("/resend")
 @login_required
 def resend_confirmation():
-    if current_user.is_confirmed:
+    if current_user.confirmed == 1:
         flash("Your account has already been confirmed.", "success")
         return redirect(url_for("core.home"))
     token = generate_token(current_user.email)
-    confirm_url = url_for("accounts.confirm_email", token=token, _external=True)
+    confirm_url = url_for("confirm_email", token=token, _external=True)
     subject = "Please confirm your email"
     msg = Message()
     msg.subject = "Welcome!"
@@ -304,7 +304,7 @@ def resend_confirmation():
     msg.body = f'Welcome! Thanks for signing up. Please follow this link to activate your account: {confirm_url}'
     mail.send(msg)
     flash("A new confirmation email has been sent.", "success")
-    return redirect(url_for("accounts.inactive"))
+    return redirect(url_for("inactive"))
 
 
 login_manager = LoginManager()
