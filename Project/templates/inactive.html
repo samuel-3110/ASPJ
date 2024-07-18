@@ -1,4 +1,4 @@
-{% extends "_base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %}
 
 <div class="text-center">
   <h1>Welcome!</h1>
@@ -9,7 +9,7 @@
   </p>
   <p>
     Didn't get the email?
-    <a href="{{ url_for('accounts.resend_confirmation') }}">Resend</a>.
+    <a href="{{ url_for('resend_confirmation') }}">Resend</a>.
   </p>
 </div>
 
