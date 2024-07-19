@@ -8,36 +8,37 @@
     <!-- Your first column here -->
   </div>
   <div class="col-md-2 bg-info">
-      <div class="ms-4">
+    <div class="ms-4">
       <br>
       <h1 class="text-break">{{ username }}</h1>
       <h5 class="my-3"><a href="/userprofile" class="link-primary" style="text-decoration:none">Account</a></h5>
       <h5 class="my-3"><a href="/profile:orders" class="link-dark" style="text-decoration:none">Orders</a></h5>
       <h5 class="my-3"><a href="/logout" style="text-decoration:none" class="link-dark">Logout</a></h5>
-          <br><br><br><br><br><br>
-      </div>
+      <br><br><br><br><br><br>
+    </div>
   </div>
   <div class="col-md-8 bg-light">
-      {% from "includes/_formHelper.html" import render_field %}
-      <div class="ms-4">
+    {% from "includes/_formHelper.html" import render_field %}
+    <div class="ms-4">
       <br>
       <h2>Account</h2>
       <h4>Are you sure you want to <b class="text-danger">delete</b> your account?</h4>
       {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="notification text-danger">
+        {% if messages %}
+          <div class="notification text-danger">
             {{ messages[0] }}
-        </div>
-      {% endif %}
-      {% endwith %}
-      <form id="signup" method="POST" action="">
-          <div class="form-group">
-            {{ render_field(form.password_check, class="form-control") }}
           </div>
-          <br>
-          <input type="submit" value="Delete account" class="btn btn-danger"/>
+        {% endif %}
+      {% endwith %}
+      <form id="signup" method="POST" action="{{ url_for('delete_account') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          {{ render_field(form.password_check, class="form-control") }}
+        </div>
+        <br>
+        <input type="submit" value="Delete account" class="btn btn-danger"/>
       </form>
-      </div>
+    </div>
   </div>
   <div class="col-md-1">
   </div>
