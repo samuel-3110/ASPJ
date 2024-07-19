@@ -16,6 +16,7 @@
       <a href="/" style="text-decoration:none"><h6 class="text-success">Sellrouca</h6></a>
 <h1 class="display-4 text-success">Your one stop<br>Online trading centre</h1>
 <form method="POST" action="">
+  {{ form.hidden_tag() }}
   <div class="form-group">
     {{ render_field(form.security, class="form-control") }}
   </div>
