@@ -20,15 +20,16 @@
   <div class="col-md-8 bg-light">
       {% from "includes/_formHelper.html" import render_field %}
       <div class="ms-4">
-      <br>
-      <h2>Account</h2>
-      <form id="signup" method="POST" action="">
+        <br>
+        <h2>Account</h2>
+        <form id="signup" method="POST" action="">
+          {{ form.hidden_tag() }}
           <div class="form-group">
             {{ render_field(form.username, class="form-control") }}
           </div>
           <br>
           <input type="submit" value="Next" class="btn btn-success"/>
-      </form>
+        </form>
       </div>
   </div>
   <div class="col-md-1">
