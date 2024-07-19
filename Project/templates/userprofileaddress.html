@@ -23,11 +23,12 @@
       <br>
       <h2>Account</h2>
       <form id="signup" method="POST" action="">
-          <div class="form-group">
-            {{ render_field(form.mailing_address, class="form-control") }}
-          </div>
-          <br>
-          <input type="submit" value="Next" class="btn btn-success"/>
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          {{ render_field(form.mailing_address, class="form-control") }}
+        </div>
+        <br>
+        <input type="submit" value="Next" class="btn btn-success"/>
       </form>
       </div>
   </div>
