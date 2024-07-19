@@ -18,6 +18,7 @@
 <h1 class="display-4 text-success">Your one stop<br>Online trading centre</h1>
 <h6>Forgot your password? No problem! Just enter your email below</h6>
 <form method="POST" action="">
+  {{ form.hidden_tag() }}
   <div class="form-group">
     {{ render_field(form.email_address_check, class="form-control") }}
   </div>
