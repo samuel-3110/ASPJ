@@ -1,22 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Sellrouca{% endblock %}
+{% block head %}
+<!-- To Call Bootstrap + CSS -->
+{{ super() }}
+{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
+<!-- To Call Bootstrap JS -->
+{{ super() }} 
 
-    img {
-        width: 100%;
-        height: auto; /* Maintain aspect ratio */
-        display: block;
-    }
-</style>
-<h1 class="display-4"></h1>
 <div class="container text-center">
-    <p>This is a homepage</p>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="notification text-danger">
@@ -26,5 +19,101 @@
     {% endwith %}
 </div>
 
-{% endblock %}
+<h4 class="mx-auto mt-5" style="width: 60%;">What would you like to find?</h4>
 
+<div class="row mx-auto" style="width: 60%;">
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/02_mobile_phones_gadgets.png" alt="Phone">
+        <figcaption>Mobile Phones & Gadgets</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/08_womens_fashion.png" alt="Dress">
+        <figcaption>Women's Fashion</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/09_mens_fashion.png" alt="Shirt">
+        <figcaption>Men's Fashion</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/10_luxury.png" alt="Handbag">
+        <figcaption>Luxury</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/2300/2020/01/16/freeitems-1600401157.png" alt="Present">
+        <figcaption>Free Items</figcaption>
+    </div>
+    <div class="border rounded p-2 text-center me-4 col" style="background-color: #F0F1F1;">
+        <img class="img-fluid category" src="https://media.karousell.com/media/photos/country-collections/icons/main_v2/06_furniture_home_living.png" alt="Sofa">
+        <figcaption>Furniture & Home Living</figcaption>
+    </div>
+</div>
+
+<div id="carouselExample" class="carousel carousel-dark slide mt-5">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="row row-cols-5 justify-content-center">
+                {% for product in products %}
+                <a href="{{ url_for('product', product_id=product.id) }}" style="display: contents;">
+                    <div class="card col-xs-6 col-md-4 col-lg-2 mx-1" style="width: 12%" onclick="">
+                        <div class="card-body d-flex">
+                            <img class="img-fluid" src="https://shorturl.at/HpojE" style="border-radius: 50%; width: 40px; border: 1px solid lightgray;">
+                            <p class="card-text ms-2" style="font-size: 0.8rem;">{{ product.user.username }}</p>
+                        </div>
+                        {% for image in product.images %}
+                        <img class="img-fluid card-img-top" src="{{ image.filename }}" alt="...">
+                        {% endfor %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">S${{ product.price }}</h6>
+                            <p class="card-text">{{ product.condition }}</p>
+                            <p class="card-text">{{ product.description }}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="margin-left: 17%;">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="margin-right: 17%;">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const carousel = document.querySelector('#carouselExample');
+      const prevButton = carousel.querySelector('.carousel-control-prev');
+      const nextButton = carousel.querySelector('.carousel-control-next');
+  
+      function updateArrowVisibility() {
+        const activeIndex = Array.from(carousel.querySelectorAll('.carousel-item')).findIndex(item => item.classList.contains('active'));
+        const totalItems = carousel.querySelectorAll('.carousel-item').length;
+  
+        if (activeIndex === 0) {
+          prevButton.style.display = 'none';
+        } else {
+          prevButton.style.display = 'block';
+        }
+  
+        if (activeIndex === totalItems - 1) {
+          nextButton.style.display = 'none';
+        } else {
+          nextButton.style.display = 'block';
+        }
+      }
+  
+      // Initial check
+      updateArrowVisibility();
+  
+      // Update visibility on slide event
+      carousel.addEventListener('slid.bs.carousel', updateArrowVisibility);
+    });
+</script>
+
+{% endblock %}
