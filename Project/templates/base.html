@@ -11,7 +11,7 @@
 </head>
 <body>
     {% block navbar %}
-    {% if 'id' in session %}
+    {% if current_user.is_authenticated %}
     {% include 'includes/_navbarlogin.html' %}
     {% else %}
     {% include 'includes/_navbar.html' %}
