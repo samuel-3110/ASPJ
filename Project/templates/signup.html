@@ -25,6 +25,7 @@
 {% endif %}
 {% endwith %}
 <form id="signup" method="POST" action="">
+  {{ form.hidden_tag() }}
   <div class="form-group">
     {{ render_field(form.username, class="form-control") }}
   </div>
