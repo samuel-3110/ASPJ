@@ -24,6 +24,7 @@
 {% endif %}
 {% endwith %}
 <form method="POST" action="">
+  {{ form.hidden_tag() }}
   <div class="form-group">
     {{ render_field(form.email_address_check, class="form-control") }}
   </div>
