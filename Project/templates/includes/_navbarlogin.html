@@ -1,4 +1,89 @@
-<nav class="navbar navbar-expand-sm bg-light navbar-light">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="{{url_for('static', filename='logo.png')}}" style="width:50px;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <!-- <li class="nav-item">
+                    <a class="nav-link active" href="#">Electronics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Fashion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Luxury</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Furniture</a>
+                </li> -->
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        Categories
+                    </a>
+                </li>
+            </ul>
+            <form class="d-flex mx-auto" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-success" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/userprofile">
+                        <i class="bi bi-person-circle h3"></i>
+                    </a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="navbar-brand" href="/">
+                        <img src="{{url_for('static', filename='cart.png')}}" style="width:25px;">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger" href="/sell">Sell</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+      </div>
+      <div class="dropdown mt-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Dropdown button
+        </button>
+        <!-- <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+
+<!-- YY's Navbar Design  -->
+<!-- <nav class="navbar navbar-expand-sm bg-light navbar-light">
     <div class="container-fluid">
         <a class="navbar-brand ms-5" href="/">
             <img src="{{url_for('static', filename='logo.png')}}" style="width:100px;">
@@ -50,3 +135,4 @@
     </div>
 </nav>
 
+ -->
