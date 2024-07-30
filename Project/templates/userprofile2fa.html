@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Sellrouca - Profile{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="modal-body row">
+  <div class="col-md-1">
+    <!-- Your first column here -->
+  </div>
+  <div class="col-md-2 bg-info">
+      <div class="ms-4">
+      <br>
+      <h1 class="text-break">{{ username }}</h1>
+      <h5 class="my-3"><a href="/userprofile" class="link-primary" style="text-decoration:none">Account</a></h5>
+      <h5 class="my-3"><a href="/profile:orders" class="link-dark" style="text-decoration:none">Orders</a></h5>
+      <h5 class="my-3"><a href="/logout" style="text-decoration:none" class="link-dark">Logout</a></h5>
+          <br><br><br><br><br><br>
+      </div>
+  </div>
+  <div class="col-md-8 bg-light">
+      {% from "includes/_formHelper.html" import render_field %}
+      <div class="ms-4">
+      <br>
+      <h2>Account</h2>
+      <h5>2FA is currently {{ status }}</h5>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="notification text-danger">
+              {{ messages[0] }}
+          </div>
+        {% endif %}
+        {% endwith %}
+      <form id="signup" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ render_field(form.password_check, class="form-control") }}
+        </div>
+        <br>
+        {% if current_user.twofa == 0 %}
+            <input type="submit" value="Enable" class="btn btn-success"/>
+        {% else %}
+            <input type="submit" value="Disable" class="btn btn-danger"/>
+        {% endif %}
+      </form>
+      </div>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+{% endblock %}
+

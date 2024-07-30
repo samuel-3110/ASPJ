@@ -15,27 +15,12 @@
     {% from "includes/_formHelper.html" import render_field %}<br><br>
       <a href="/" style="text-decoration:none"><h6 class="text-success">Sellrouca</h6></a>
 <h1 class="display-4 text-success">Your one stop<br>Online trading centre</h1>
-<h5>Welcome back! Please login with your account</h5>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-    <div class="notification text-danger">
-        {{ messages[0] }}
-    </div>
-{% endif %}
-{% endwith %}
+<h5>You have enabled 2fa. Please enter your OTP</h5>
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   <div class="form-group">
-    {{ render_field(form.email_address_check, class="form-control") }}
+    {{ render_field(form.otpcheck, class="form-control") }}
   </div>
-  <div class="form-group">
-    {{ render_field(form.password_check, class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ render_field(form.recaptcha, class="form-control") }}
-  </div>
-      <a href="/forgot">Forgot password?</a><br>
-      <a href="/signup">Sign Up</a><br><br>
   <input type="submit" value="Login" class="btn btn-success"/>
 
 </form>

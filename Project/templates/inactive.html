@@ -9,8 +9,16 @@
   </p>
   <p>
     Didn't get the email?
-    <a href="{{ url_for('resend_confirmation') }}">Resend</a>.
+    <a href="{{ url_for('resend_confirmation') }}">Resend</a>.<br>
+    <a href="/logout" style="text-decoration:none" class="text-danger">Logout</a>
   </p>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="notification text-danger">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+    {% endwith %}
 </div>
 
 {% endblock %}

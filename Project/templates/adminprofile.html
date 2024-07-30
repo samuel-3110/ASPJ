@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <!-- Bootstrap, Bootstrap Icons, CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Admin</title>
+    {% endblock %}
+</head>
+<body>
+    <div class="container-fluid">
+        <br><br>
+<div class="modal-body row">
+  <div class="col-md-1">
+    <!-- Your first column here -->
+  </div>
+  <div class="col-md-2 bg-info">
+      <div class="ms-4">
+      <br>
+      <h1 class="text-break">{{ username }}</h1>
+      <h5 class="my-3"><a href="/admin" class="link-primary" style="text-decoration:none">Logs</a></h5>
+      <h5 class="my-3"><a href="/adminusers" class="link-dark" style="text-decoration:none">Users</a></h5>
+      <h5 class="my-3"><a href="/logout" style="text-decoration:none" class="link-dark">Logout</a></h5>
+          <br><br><br><br><br><br>
+      </div>
+  </div>
+  <div class="col-md-7 bg-light">
+      <div class="ms-4">
+      <br>
+      <h2>Logs</h2>
+          <input class="form-control" id="myInput" type="text" placeholder="Filter...">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Email</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="myTable">
+    {% for x in log_list %}
+     <tr>
+        <td>{{ x["date"] }}</td>
+        <td>{{ x["time"] }}</td>
+        <td>{{ x["email"] }}</td>
+        <td>{{ x["status"] }}</td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+      </div>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+    </div>
+    <{% block scripts %}
+<!-- Popper 2.10.2, Bootstrap 5.1.3 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    {% endblock %}
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+</body>
+</html>
+
