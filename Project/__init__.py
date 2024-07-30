@@ -241,12 +241,13 @@ def admin_users():
     users = Users.query.all()
     user_list = []
     for x in users:
-        if x.banned == 0:
-            status = "Active"
-        else:
-            status = "Banned"
-        user = {"id": x.id, "username": x.username, "email": x.email, "banned": status}
-        user_list.append(user)
+        if x.admin == 0:
+            if x.banned == 0:
+                status = "Active"
+            else:
+                status = "Banned"
+            user = {"id": x.id, "username": x.username, "email": x.email, "banned": status}
+            user_list.append(user)
     return render_template('adminusers.html', username=current_user.username, user_list=user_list)
 
 
