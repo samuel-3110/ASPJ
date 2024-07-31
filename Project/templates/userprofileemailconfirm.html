@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Sellrouca - Profile{% endblock %}
+
+{% block content %}
+<br><br>
+<div class="modal-body row">
+  <div class="col-md-1">
+    <!-- Your first column here -->
+  </div>
+  <div class="col-md-2 bg-info">
+      <div class="ms-4">
+      <br>
+      <h1 class="text-break">{{ username }}</h1>
+      <h5 class="my-3"><a href="/userprofile" class="link-primary" style="text-decoration:none">Account</a></h5>
+      <h5 class="my-3"><a href="/profile:orders" class="link-dark" style="text-decoration:none">Orders</a></h5>
+      <h5 class="my-3"><a href="/logout" style="text-decoration:none" class="link-dark">Logout</a></h5>
+          <br><br><br><br><br><br>
+      </div>
+  </div>
+  <div class="col-md-7 bg-light">
+      <div class="ms-4">
+      <br>
+      <h2>Account</h2>
+      <h5 class="my-3">A confirmation link has been sent to your new email. Click the link to change your email.</h5>
+      <h5 class="my-3"><a href="/userprofile" class="link-primary" style="text-decoration:none">Back to account</a></h5>
+      </div>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+{% endblock %}
+
