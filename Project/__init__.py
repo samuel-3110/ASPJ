@@ -565,9 +565,15 @@ def update_email():
             if dupe:
                 flash('Email address already exists.')
                 return redirect(url_for('update_email'))
-            current_user.email = new_email.email.data
-            db.session.commit()
-            return redirect(url_for('user_profile'))
+            token = generate_update_token(current_user.email, new_email.email.data)
+            confirm_url = url_for("confirm_update_email", token=token, _external=True)
+            msg = Message()
+            msg.subject = "Updating your email?"
+            msg.recipients = [new_email.email.data]
+            msg.sender = 'relego432@gmail.com'
+            msg.body = f'Click this link to confirm your new email: {confirm_url}'
+            mail.send(msg)
+            return redirect(url_for('update_email_confirm'))
         flash("Password is incorrect.")
         return redirect(url_for('update_email'))
     return render_template('userprofileemail.html', form=new_email, username=current_user.username)
@@ -630,6 +636,48 @@ def deleteconfirm():
 
 
 '''logging'''
+
+'''YY new codes 31/7/2024 11:00am
+instructions: place the new codes below somewhere, replace the /update:email app route codes with current version's, 
+download new template userprofileemailconfirm
+
+def generate_update_token(old, new):
+    serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+    emails = f"{old},{new}"
+    return serializer.dumps(emails, salt=app.config["SECURITY_PASSWORD_SALT"])
+
+
+def confirm_update_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
+    try:
+        emails = serializer.loads(
+            token, salt=app.config["SECURITY_PASSWORD_SALT"], max_age=expiration
+        )
+        return emails
+    except:
+        return False
+
+
+@app.route('/profile:email:confirm')
+@login_required
+@confirmed
+def update_email_confirm():
+    return render_template('userprofileemailconfirm.html', username=current_user.username)
+
+
+@app.route("/update:email/<token>")
+@login_required
+@confirmed
+def confirm_update_email(token):
+    emails = confirm_update_token(token)
+    x = emails.split(',')
+    user = Users.query.filter_by(email=x[0]).first_or_404()
+    if user.email == current_user.email:
+        current_user.email = x[1]
+        db.session.commit()
+        flash("Your email has been updated.", "success")
+    return redirect(url_for("home"))
+'''
 
 if __name__ == "__main__":
     app.run(debug=True)
